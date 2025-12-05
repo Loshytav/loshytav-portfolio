@@ -236,7 +236,13 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div class="relative">
                     <div class="glass-card p-2 rounded-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
-                        <img src="retouch_2025120309395000.jpg" alt="Lotuence Dube" class="rounded-xl w-full h-auto object-cover">
+                        <!-- Container for the dynamically generated image -->
+                        <div id="coding-image-container" class="rounded-xl w-full h-auto bg-brand-blue/30 flex items-center justify-center min-h-[300px] overflow-hidden">
+                            <p id="coding-image-loader" class="text-brand-cyan text-lg animate-pulse font-semibold p-8">
+                                Generating professional coding image...
+                            </p>
+                            <img id="generated-coding-image" alt="Lotuence Dube Coding" class="w-full h-full object-cover hidden">
+                        </div>
                     </div>
                 </div>
                 
@@ -354,12 +360,18 @@
                     </a>
                 </div>
                 <div class="relative bg-gradient-to-br from-brand-blue to-brand-dark h-72 lg:h-auto flex items-center justify-center overflow-hidden group p-8">
-                    <!-- Abstract Phone Representation -->
+                    <!-- Abstract Background Effect -->
                     <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555421689-491a97ff2040?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')] bg-cover bg-center opacity-20 group-hover:scale-105 transition-transform duration-700 mix-blend-overlay"></div>
+                    
+                    <!-- Phone Mockup Container -->
                     <div class="relative z-10 w-56 h-96 rounded-[3rem] border-8 border-brand-dark bg-brand-dark flex items-center justify-center shadow-2xl transform rotate-12 group-hover:rotate-6 transition-all duration-500 overflow-hidden">
+                        <!-- Phone Notch (Top Bar) -->
                         <div class="absolute top-0 w-40 h-6 bg-brand-dark rounded-b-3xl z-20"></div>
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" alt="App Screen" class="w-full h-full object-cover opacity-80">
-                        <span class="absolute text-3xl font-extrabold text-white tracking-tighter z-30 drop-shadow-lg">BEZ<span class="text-brand-cyan">BETS</span></span>
+                        
+                        <!-- ACTUAL Bezbets App Screenshot -->
+                        <img src="https://i.postimg.cc/xTBKhZ5Z/Screenshot-20251203-090828.jpg" 
+                             alt="Bezbets App Screenshot UI" 
+                             class="w-full h-full object-cover">
                     </div>
                 </div>
             </div>
@@ -389,7 +401,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-brand-cyan mb-2 font-heading">Message</label>
-                        <textarea rows="4" required class="w-full bg-brand-dark/60 border border-brand-blue/50 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all text-white placeholder-gray-500" placeholder="Tell me about your project..."></textarea>
+                        <textarea rows="4" required class="w-full bg-brand-dark/60 border border-brand-blue/50 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-cyan transition-all text-white placeholder-gray-500" placeholder="Tell me about your project..."></textarea>
                     </div>
                     <button type="submit" class="w-full bg-brand-cyan text-brand-dark font-extrabold py-4 rounded-lg hover:bg-white transition-all shadow-[0_0_20px_-5px_rgba(0,180,216,0.5)] hover:shadow-[0_0_20px_-5px_rgba(255,255,255,0.5)] font-heading text-lg">
                         Send Message
@@ -427,6 +439,105 @@
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
+
+        // --- Utility Functions for Image Generation ---
+        
+        // Base64 to ArrayBuffer for image decoding (not strictly needed for display but good practice)
+        function base64ToUrl(base64Data) {
+            return `data:image/png;base64,${base64Data}`;
+        }
+        
+        // Fetch wrapper for exponential backoff
+        async function fetchWithExponentialBackoff(url, options, maxRetries = 5) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        // Check if it's a transient error (e.g., 500, 429)
+                        if (response.status === 429 || response.status >= 500) {
+                            throw new Error(`Server error (${response.status}), retrying...`);
+                        }
+                        // For non-retryable errors, throw immediately
+                        throw new Error(`Non-retryable HTTP error: ${response.statusText}`);
+                    }
+                    return response;
+                } catch (error) {
+                    // Only retry if the error indicates a need for backoff
+                    if (i < maxRetries - 1 && error.message.includes("retrying")) {
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    } else {
+                        console.error("Fetch failed after multiple retries:", error);
+                        throw error;
+                    }
+                }
+            }
+        }
+
+        // --- Image Generation Logic ---
+
+        async function generateCodingImage() {
+            const loader = document.getElementById('coding-image-loader');
+            const imageElement = document.getElementById('generated-coding-image');
+            const container = document.getElementById('coding-image-container');
+
+            // Show loader, hide image
+            loader.classList.remove('hidden');
+            imageElement.classList.add('hidden');
+            
+            // Image Generation Prompt
+            const userPrompt = "A professional portrait of a successful, well-dressed African man, similar to the profile image, sitting in a modern, dark, high-tech office environment in Zimbabwe, focused on a large monitor displaying complex code. The atmosphere is professional and driven. The lighting is cinematic with a strong cyan/blue glow reflecting off the code screen. Ultra-detailed, realistic photography.";
+            
+            const payload = { 
+                instances: [{ prompt: userPrompt }], 
+                parameters: { "sampleCount": 1, "aspectRatio": "1:1" } 
+            };
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
+
+            try {
+                const response = await fetchWithExponentialBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                const base64Data = result?.predictions?.[0]?.bytesBase64Encoded;
+
+                if (base64Data) {
+                    const imageUrl = base64ToUrl(base64Data);
+                    imageElement.src = imageUrl;
+                    imageElement.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    container.classList.remove('bg-brand-blue/30');
+                    container.classList.remove('min-h-[300px]');
+                } else {
+                    throw new Error("Image generation failed to return data.");
+                }
+
+            } catch (error) {
+                console.error("Error generating image:", error);
+                loader.innerText = "Image failed to load. Using placeholder.";
+                
+                // Fallback: use a placeholder image URL
+                imageElement.src = "https://placehold.co/600x400/0A1128/00B4D8?text=Coding+Image+Placeholder";
+                imageElement.classList.remove('hidden');
+                container.classList.remove('bg-brand-blue/30');
+                container.classList.remove('min-h-[300px]');
+            }
+        }
+        
+        // --- Document Ready and Initialization ---
+
+        window.onload = function() {
+            // Initialize Lucide Icons
+            lucide.createIcons();
+            
+            // Start the image generation process for the About section
+            generateCodingImage();
+        };
 
         // Menu Toggle Logic
         function toggleMenu() {
