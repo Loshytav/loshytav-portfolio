@@ -1,26 +1,237 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loshy Tav — Digital Experience Architect</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LoshyTav — Lotuence Dube | Apps, Web & Design</title>
+  <meta name="description" content="Lotuence Dube — App & Web Developer, Certified Marketer. I build apps and websites that convert." />
+  <meta name="author" content="Lotuence Dube (LoshyTav)" />
+  <meta name="theme-color" content="#02060F" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="LoshyTav — Lotuence Dube | Apps, Web & Design" />
+  <meta property="og:description" content="Developer + Certified Marketer. Apps, websites and brand design built to convert." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://placehold.co/1200x630/0A1128/00B4D8?text=LoshyTav" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tailwind for utility classes (cdn) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js" defer></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"Lotuence Dube",
+    "jobTitle":"App & Web Developer, Digital Marketer",
+    "url":"https://loshytav.github.io/loshytav-portfolio",
+    "sameAs":["https://www.facebook.com/loshydee","https://www.instagram.com/loshy_tav"]
+  }
+  </script>
 </head>
-<body>
-<div class="hero">
-  <h1 class="glow">Loshy Tav</h1>
-  <p class="subtitle">Digital Marketing • Websites • Apps • Graphics</p>
-</div>
+<body class="bg-dark text-white antialiased">
 
-<div class="contact">
-  <a href="mailto:loshytav@gmail.com">Email</a>
-  <a href="tel:+263775142545">Call</a>
-  <a href="https://www.facebook.com/loshydee">Facebook</a>
-  <a href="https://www.instagram.com/loshy_tav">Instagram</a>
-</div>
+  <!-- Background canvas for Three.js particles -->
+  <canvas id="hero-canvas" class="absolute inset-0 -z-10"></canvas>
 
-<a href="https://wa.me/263775142545" class="whatsapp">WhatsApp</a>
+  <!-- NAV -->
+  <header class="fixed w-full top-4 z-50 px-6">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md bg-gradient-to-br from-[#05202e] to-[#001824] flex items-center justify-center text-white font-bold">L</div>
+        <div class="hidden sm:block">
+          <div class="font-bold">LOSHY<span class="text-cyan">TAV</span></div>
+          <div class="text-xs text-slate-400 -mt-1">Apps • Web • Design</div>
+        </div>
+      </a>
+      <nav class="hidden md:flex gap-6 items-center">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#projects" class="nav-link">Work</a>
+        <a href="#contact" class="btn-ghost">Contact</a>
+      </nav>
+      <div class="md:hidden">
+        <button id="mobileBtn" class="p-2 rounded bg-white/5"><i data-lucide="menu"></i></button>
+      </div>
+    </div>
+  </header>
 
-<script src="script.js"></script>
+  <!-- HERO -->
+  <main id="home" class="min-h-screen flex items-center">
+    <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center py-28">
+      <div class="z-20">
+        <div class="inline-flex items-center gap-3 mb-6">
+          <span class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan/10 text-cyan">Sales & Marketing • App Dev</span>
+          <span class="text-xs text-slate-400">Zimbabwe ↔ Global</span>
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">I build <span class="gradient-text">products</span> that ship and sell — apps, sites & brands.</h1>
+        <p class="mt-6 text-slate-300 max-w-xl">I'm <strong>Lotuence Dube</strong> — developer + certified marketer. I merge product thinking, conversion strategy and polished engineering to deliver results that scale.</p>
+
+        <div class="mt-8 flex gap-4 items-center">
+          <a href="#projects" class="btn-primary magnetic inline-flex items-center gap-3 px-5 py-3 rounded-lg">View Portfolio <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+          <a href="#contact" class="btn-outline px-5 py-3 rounded-lg">Let's talk</a>
+          <button id="pressKitBtn" class="px-4 py-2 bg-white/5 rounded">Press Kit</button>
+        </div>
+
+        <div class="mt-8 flex gap-6 items-center text-sm text-slate-400">
+          <div><strong class="text-white">24+</strong><div>Projects</div></div>
+          <div><strong class="text-white">5y</strong><div>Experience</div></div>
+          <div><strong class="text-white">Certified</strong><div>Marketing</div></div>
+        </div>
+      </div>
+
+      <div class="z-20 flex justify-center lg:justify-end">
+        <div class="relative w-72 h-72 md:w-96 md:h-96">
+          <div class="absolute inset-0 rounded-full bg-cyan/8 blur-3xl"></div>
+          <img src="https://placehold.co/800x800/0A1128/00B4D8?text=Lotuence" alt="Lotuence Dube" class="rounded-full w-full h-full object-cover border-4 border-white/10 photo-glow">
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ABOUT -->
+  <section id="about" class="py-20">
+    <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h2 class="text-3xl font-extrabold">About — The <span class="text-cyan">Certified Marketer</span> Who Codes</h2>
+        <p class="mt-4 text-slate-300">I trained at Bulawayo Polytechnic and built commercial apps since 2019. I focus on product thinking, funnels, retention and visuals that convert. I speak both "tech" and "business".</p>
+
+        <div class="mt-6 grid grid-cols-2 gap-4">
+          <div class="glass-card p-4 rounded-xl">
+            <div class="text-2xl font-bold text-cyan">Certified</div>
+            <div class="text-xs text-slate-400">Sales & Marketing</div>
+          </div>
+          <div class="glass-card p-4 rounded-xl">
+            <div class="text-2xl font-bold">Developer</div>
+            <div class="text-xs text-slate-400">Apps & Web</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="glass-card p-6 rounded-2xl min-h-[300px] flex items-center justify-center">
+          <img src="https://placehold.co/800x600/0A1128/00B4D8?text=Coding+Image" alt="Coding portrait" class="rounded-xl w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-3xl font-extrabold text-center">Services — <span class="gradient-text">What I do</span></h3>
+      <p class="text-center text-slate-400 mt-3">Product strategy · Android apps · Web design · Branding · Growth</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        <div class="glass-card p-6 rounded-2xl"><i data-lucide="smartphone" class="w-6 h-6 text-cyan mb-3"></i><h4 class="font-bold">App Development</h4><p class="text-sm text-slate-300 mt-2">Native & cross-platform apps focused on retention.</p></div>
+        <div class="glass-card p-6 rounded-2xl"><i data-lucide="monitor" class="w-6 h-6 text-cyan mb-3"></i><h4 class="font-bold">Web Design</h4><p class="text-sm text-slate-300 mt-2">Conversion-first responsive sites built for speed & SEO.</p></div>
+        <div class="glass-card p-6 rounded-2xl"><i data-lucide="palette" class="w-6 h-6 text-cyan mb-3"></i><h4 class="font-bold">Graphic Design</h4><p class="text-sm text-slate-300 mt-2">UI, branding and pitch assets that command attention.</p></div>
+        <div class="glass-card p-6 rounded-2xl"><i data-lucide="trending-up" class="w-6 h-6 text-cyan mb-3"></i><h4 class="font-bold">Growth & Marketing</h4><p class="text-sm text-slate-300 mt-2">Performance marketing to launch products.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between mb-8">
+        <h3 class="text-3xl font-extrabold">Featured Work</h3>
+        <a href="#projects" class="text-sm text-slate-400">View all</a>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <article class="glass-card rounded-3xl overflow-hidden p-6 relative">
+          <div class="md:flex gap-6 items-center">
+            <div class="flex-1">
+              <span class="text-xs text-cyan uppercase">Latest Release</span>
+              <h4 class="text-2xl font-bold mt-2">Bezbets Mobile App</h4>
+              <p class="text-slate-300 mt-3">A betting product optimized for Zimbabwe: real-time odds, secure auth and a UX focused on conversions.</p>
+              <div class="mt-6 flex gap-3">
+                <a class="text-cyan font-bold" href="#">View on Play Store</a>
+                <a class="px-4 py-2 glass-card rounded-lg" href="#">Case Study</a>
+              </div>
+            </div>
+
+            <div class="w-72">
+              <div class="relative">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=800&q=60')] bg-cover opacity-10 rounded-xl"></div>
+                <div class="relative mx-auto w-64 overflow-hidden rounded-[36px]">
+                  <img src="https://i.postimg.cc/xTBKhZ5Z/Screenshot-20251203-090828.jpg" class="w-full h-full object-cover" alt="app screenshot"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-extrabold">Ready to build something that sells?</h3>
+      <p class="text-slate-300 mt-2">Press enquiries & partnerships welcome.</p>
+
+      <form id="contactForm" class="mt-8 grid gap-4 grid-cols-1 sm:grid-cols-2 glass-card p-6 rounded-2xl" onsubmit="handleSubmit(event)">
+        <input name="name" required placeholder="Your name" class="bg-transparent border border-white/6 p-3 rounded" />
+        <input name="email" type="email" required placeholder="Email" class="bg-transparent border border-white/6 p-3 rounded" />
+        <textarea name="message" required placeholder="Tell me about the project" class="sm:col-span-2 bg-transparent border border-white/6 p-3 rounded h-32"></textarea>
+        <button type="submit" class="sm:col-span-2 btn-primary py-3 rounded-lg font-bold">Send Message</button>
+      </form>
+
+      <div class="mt-6 flex flex-wrap justify-center gap-4">
+        <a href="mailto:loshytav@gmail.com" class="glass-card px-4 py-3 rounded flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-cyan"></i> loshytav@gmail.com</a>
+        <a href="tel:+263775142545" class="glass-card px-4 py-3 rounded flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-cyan"></i> +263 77 514 2545</a>
+        <a href="https://www.facebook.com/loshydee" target="_blank" class="glass-card px-4 py-3 rounded flex items-center gap-2"><i data-lucide="facebook" class="w-4 h-4 text-cyan"></i> Facebook</a>
+        <a href="https://www.instagram.com/loshy_tav" target="_blank" class="glass-card px-4 py-3 rounded flex items-center gap-2"><i data-lucide="instagram" class="w-4 h-4 text-cyan"></i> Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 text-center text-slate-400">
+    <div class="max-w-6xl mx-auto px-6">© 2025 Lotuence Dube — LoshyTav • Built for impact.</div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a class="whatsapp-fab" href="https://wa.me/263775142545" target="_blank" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.08A9 9 0 1 1 11.92 3"></path><path d="M22 22l-3.5-1"></path><path d="M16.5 11.5a3.5 3.5 0 0 1-3.5 3.5"></path></svg>
+  </a>
+
+  <!-- Press Kit Modal -->
+  <div id="pressModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60">
+    <div class="bg-[#08101a] p-6 rounded-xl max-w-xl w-full glass-card">
+      <h4 class="font-bold">Press Kit</h4>
+      <p class="text-slate-300 mt-2">Includes hi-res images, bio, career highlights and a short video.</p>
+      <div class="mt-4 flex justify-end gap-3">
+        <a id="downloadPress" href="#" class="px-4 py-2 bg-cyan text-black rounded">Download</a>
+        <button id="closePress" class="px-4 py-2 border rounded">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
